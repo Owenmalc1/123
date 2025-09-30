@@ -56,7 +56,7 @@ def demo_cosmology():
     print(f"Integrand at z=2: {result}")
     cosmo.is_flat()
 
-def graph():
+def graph1():
         cosmo = Cosmology(70, 0.3, 0.7)
         z_values = np.linspace(0,1,100)
         integrand_values = [cosmo.integrand(z) for z in z_values]
@@ -68,7 +68,7 @@ def graph():
         plt.show()
 
 # Plot with varying omega_m
-def graph():
+def graph2():
     cosmo = Cosmology(70, 0.3, 0.7)
     z_values = np.linspace(0, 1, 100)
     plt.figure()
@@ -85,17 +85,76 @@ def graph():
     plt.grid()
     plt.show()
 
-# This is a special python idiom that
-# allows the code to be run from the command line,
-# but if you import this module in another script
-# the code below will not be executed.
+
+# graph with set omega_m and varied omega_lambda for one line and one line with set omega_lambda and varied omega_m
+
+def graph3():
+    cosmo = Cosmology(70, 0.3, 0.7)
+    z_values = np.linspace(0, 1, 100)
+    plt.figure()
+    
+    # Varying omega_lambda with fixed omega_m
+    for omega_lambda in (0.6, 0.7, 0.8):
+        cosmo.set_omega_lambda(cosmo.omega_m, omega_lambda)
+        integrand_values = [cosmo.integrand(z) for z in z_values]
+        plt.plot(z_values, integrand_values, label=f"omega_m={cosmo.omega_m:.2f}, omega_lambda={omega_lambda}")
+    
+    # the square brackets[] create a list using a for loop to calculate the integrand values for each z in z_values
+    # "omega_m={cosmo.omega_m:.2f}" formats omega_m to 2 decimal places for clarity in the legend
+    # "omega_lambda={omega_lambda}" shows the current value of omega_lambda in the legend
+    
+    # Varying omega_m with fixed omega_lambda
+    for omega_m in (0.2, 0.3, 0.4):
+        cosmo.set_omega_m(omega_m, cosmo.omega_lambda)
+        integrand_values = [cosmo.integrand(z) for z in z_values]
+        plt.plot(z_values, integrand_values, linestyle='--', label=f"omega_m={omega_m}, omega_lambda={cosmo.omega_lambda:.2f}")
+
+    #linestyle='--' makes the second set of lines dashed to differentiate them
+    
+    plt.xlabel("z")
+    plt.ylabel("Integrand")
+    plt.title("Integrand vs z for varying omega_m and omega_lambda")
+    plt.legend()
+    plt.grid()
+    plt.show()
+
+def print_objects():
+
+    cosmoA = Cosmology(70, 0.3, 0.7)
+    cosmoB = Cosmology(67.67,0.25,0.75)
+    cosmoC = Cosmology(100, 1.0, 0.0)
+    cosmoD = Cosmology(20, 0.0, 1.0)
+
+    print(cosmoA)
+    print(cosmoB)
+    print(cosmoC)
+    print(cosmoD)
+
+    print("Is cosmo1 flat?", cosmoA.is_flat())
+    print("Is cosmo2 flat?", cosmoB.is_flat())
+    print("Is cosmo3 flat?", cosmoC.is_flat())
+    print("Is cosmo4 flat?", cosmoD.is_flat())
+    print("integrand value at z=1 for cosmology A:", cosmoA.integrand(1))
+    print("omega_m*h^2 for cosmology A:", cosmoA.omega_m_h2())
+
+                
 
 if __name__ == "__main__":
     demo_cosmology()
-    graph()
+    graph1()
+    graph2()
+    graph3()
+    print_objects()
+
 
 #  a plot of the integrand as function of z with range 0 to 1 
-    
+
+#4. print out various different cosmology objects using the __str__ to show you can naviagte all the methods
+
+# This is a special python idiom that
+# allows the code to be run from the command line,
+# but if you import this module in another script
+# the code below will not be executed. 
    
 
     
