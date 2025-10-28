@@ -32,8 +32,18 @@ class Cosmology:
         print(f"Distance to z={z} using Rectangle Rule with n={n}: {D} Mpc")
         return D 
 
-        
-        
+    def distance_trapezoid(self, z, n):
+        c = constants.speed_of_light / 1000.0  # Speed of light in km/s
+        dz = z / n - 1  
+        integral = 0.5 * (self.integrand(0) + self.integrand(z))
+        for i in range(1, n):
+            z_i = i * dz
+            integral += self.integrand(z_i)
+        integral *= dz
+        D = (c / self.H0) * integral
+        print(f"Distance to z={z} using Trapezoid Rule with n={n}: {D} Mpc")
+
+        return D
             
 
 
